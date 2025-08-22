@@ -1,0 +1,8 @@
+01-01-2025: 
+Error_Door_Timeout message is added by Ken.
+Lock_stat signal is added in the CAN_Gateway by Ken
+
+04-01-2025:
+Update the CAN gateway database;
+	Add message 0x13 and 0x14;
+	Update message 0x1;

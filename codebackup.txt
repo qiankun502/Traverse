@@ -1,0 +1,297 @@
+
+void Door_Open_Operation(DI_st din,uint16_t door_encode)
+{
+	if (DOORDEBUG == TRUE)
+	{
+		ramp_state = FALSE;
+		kneel_status_kneeled=TRUE;
+	}
+
+	switch (m_doorstep)
+	{
+	case PREOPEN: //After seeing cycle request, check transmission position value (and/or other "safe to operate" values from vehicle CAN messaging),Check vehicle inclination value & temperature value, if either are outside established range do not allow power cycle until values are back within range
+		printf("Prepare opening\r\n");
+		if (CheckDoorOPCondition() == OP_ALLOW)
+		{
+			m_DoorError = m_DoorError & (NOTPARKING);
+			if (GyoSensorInRange(SensorReading) == TRUE)				//Inclination and temperature in range
+			{
+				if (din.Door_ajar == TRUE)				//Inclination and temperature in range
+				{
+					Set_Next_Door_Step(&m_doorstep,MAGRELEASE_ON);
+					printf("Go to MAGRELEASE_ON.\r\n");
+					release_timeout.flag = TRUE; 		//release_timeout_flag, 5 second
+					release_timeout.count = 0;			//release_timeout_count
+				}
+				Full_Closed_Encode=door_encode;
+			}
+			if (din.Door_ajar == TRUE)
+				Full_Closed_Encode=door_encode;
+		}
+		break;
+	case MAGRELEASE_ON:			//Activate Magna latch release ,Check for door ajar
+		if (Door_flag.general_delay_done == FALSE)
+			break;
+		DO.Release = TRUE;
+		if (DI.Door_ajar == FALSE)
+		{
+			Door_flag.ajar_deb_done  = FALSE;
+			Set_Next_Door_Step(&m_doorstep,SLOWOPEN);
+			m_doorstep = SLOWOPEN;
+			door_timeout.flag = TRUE;
+			door_timeout.count = 0;
+			printf("Go to SlowOpen\r\n");
+		}
+		break;
+	case SLOWOPEN:						//Use inclination & temp values to determine % power/speed and turn on clutch/door motor, Check encoder for door movement
+		if (Door_flag.general_delay_done == FALSE)
+			break;
+		DO.Clutch = TRUE;
+		Set_Next_Door_Step(&m_doorstep,NORMAL_OPEN);
+		printf("Go to NORMAL_OPEN\r\n");
+		Start_Open(OPEN_DOOR_SPEED_0);       	//OPEN_DOOR_SPEED_0 = 50 ;   Need add compensation for inclination and temperature.
+//		if ((door_timeout.count>500) && (door_encode>(Full_Closed_Encode-100)))  	//5s, if encode reading is not changed over a set value(100) in 5 seconds. Means door is no openning
+//		{
+//			Set_Timeout_Error(DOOR_START_OPEN_TO_ERROR);      //Open door fail
+//			m_doorstep = DOORIDLE;
+//		}
+//		else if (door_encode <(Full_Closed_Encode-100))
+//		{
+//			m_doorstep = MAGRELEASEOFF;
+//		}
+		break;
+//	case MAGRELEASEOFF:
+//		printf("MAGRELEASEOFF\r\n");
+//		DO.Release=FALSE;
+//		m_doorstep = NORMAL_OPEN;
+//		Start_Open(open_door_speed_1);
+//		break;
+	case NORMAL_OPEN:     		//After "X" value of movement, adjust door motor power/speed to next "zone" or range
+		if (Door_flag.general_delay_done == TRUE)
+			{
+				DO.Clutch = TRUE;
+				DO.Release = FALSE;
+				Start_Open(80);
+				if (DI.full_door_open == TRUE)
+				{
+					Door_flag.f_open_deb_done  = FALSE;
+					m_doorstep = FULL_OPENED;
+					printf("Go to FULL_OPENED\r\n");
+				}
+			}
+//		if (door_encode<=(Full_Opened_Encode-20))
+//		{
+//			m_doorstep = ALMOSTOPEN;
+//			Start_Open(open_door_speed_2);
+//			door_final_open_timeout.flag = TRUE; 		//door_final_open_timeout
+//			door_final_open_timeout.count = 0;
+//		}
+//		if ((door_timeout.count>1500))         //if open time is longer than 15 seconds
+//		{
+//			Set_Timeout_Error(DOOR_OPEN_TO_ERROR);      //Open door fail
+//			m_doorstep = DOORIDLE;
+//		}
+		break;
+//	case ALMOSTOPEN:		//When reaching "XX" value of movement (near full open), adjust door motor power/speed to "approaching full open" range
+//		printf("ALMOSTOPEN\r\n");
+//		if (Door_flag.f_open_deb_done == TRUE)        //Full open switch is on
+//		{
+//			Door_flag.f_open_deb_done  = FALSE;
+//			m_doorstep = FULL_OPENED;
+//
+//		}
+//		if ((door_final_open_timeout.count>100))         //if open time is longer than 1 seconds
+//		{
+//			Set_Timeout_Error(DOOR_FULL_OPEN_TO_ERROR);      //Open door fail
+//			m_doorstep = DOORIDLE;
+//		}
+//		break;
+	case FULL_OPENED:		//Shut down door motor/deactive clutch when full open latch signal is active + timer value?
+		//printf("FULL_OPENED\r\n");
+		Pause_Hold();                            //Lock the Motor
+
+		DO.Release = FALSE;
+		Set_Next_Door_Step(&m_doorstep,OFF_MOTOR);
+		printf("go to OFF_MOTOR\r\n");
+		break;
+	case OFF_MOTOR:
+		if (Door_flag.general_delay_done == FALSE)
+			break;
+		DO.Clutch = FALSE;
+//		if (Door_flag.Release_to_Motor_OFF_done == TRUE)
+//		{
+//			Door_flag.Release_to_Motor_OFF_done = FALSE;
+//			Full_Opened_Encode = door_encode;
+//			Pause_Hold();                            //Lock the Motor
+//			DO.Clutch = FALSE;
+//			if (DI.ConvDisabled==FALSE)				//if conversion disable is off, go to the ramp wait, else go to idle.
+//			{
+//				ramp_open_timeout.flag = TRUE;
+//				ramp_open_timeout.count = 0;
+//				m_doorstep = KNEELRAMP;
+//			}
+//			else									//Conversion disable is on, finish door control sequence.
+//			{
+				m_doorstep = AUTOCYCLE_WAIT_CLOSE_DELAY;
+				Door_flag.Autocycle_delay_flag = TRUE;
+				printf("go to AUTOCYCLE_WAIT_CLOSE_DELAY\r\n");
+//			}
+//		}
+		break;
+
+	case KNEELRAMP:
+		printf("KNEELRAMP\r\n");
+		m_doorstep = DOORIDLE;
+		break;
+
+/************************* close door steps****************************/
+	case PRECLOSE: 				//After seeing cycle request, stow ramp & kneel up (using hardware/software developed on next gen controller work)
+		printf("PRECLOSE\r\n");
+		if ((ramp_state == FALSE) && (kneel_status_unkneeled == TRUE) ) //Fully Stewed.
+		{
+			m_doorstep = CHECK_CONDITION;
+		}
+		else
+		{
+			ramp_stew_timeout.flag = TRUE;
+			if (ramp_stew_timeout.count >=200)     //stew waiting time >20 seconds. give up
+			{
+				m_doorstep = DOORIDLE;
+				ramp_stew_timeout.flag = FALSE;
+				Set_Timeout_Error(RAMP_STEW_TO_ERROR);
+			}
+		}
+		break;
+	case CHECK_CONDITION: 		//Check vehicle inclination value & temperature value, if either are outside established range do not allow power door cycle until values are back within range
+		printf("CHECK_CONDITION\r\n");
+		if (CheckDoorOPCondition() == OP_ALLOW)
+		{
+			m_DoorError = m_DoorError & (NOTPARKING);
+			if (GyoSensorInRange(SensorReading) == TRUE)				//Inclination and temperature in range
+			{
+				m_doorstep = TURN_ON_CLUTCH;
+			}
+		}
+		else
+		{
+			Set_Timeout_Error(RAMP_STEW_TO_ERROR);
+		}
+		break;
+	case TURN_ON_CLUTCH: 		//Use inclination & temp values to determine % power/speed and turn on clutch/door motor in OPEN direction for "X" time value
+		printf("TURN_ON_CLUTCH\r\n");
+		Start_Open(80);					//Try to open to make the latch can be unlocked.
+		Door_flag.Motor_to_Latch_ON_flag = TRUE;
+		DO.Clutch = TRUE;
+		m_doorstep = OPENLATCH;
+		release_timeout.flag = TRUE; 		//release_timeout_flag
+		release_timeout.count = 0;			//release_timeout_count
+		break;
+	case OPENLATCH:    		//Activate Braun full open latch release actuator & hold for "X" time value
+		printf("OPENLATCH\r\n");
+		if (Door_flag.Motor_to_Latch_ON_done == TRUE)
+		{
+			DO.Latch = TRUE;
+			m_doorstep = OPEN_TO_WAIT_OPEN_SW_OFF;
+//			Door_Close_Timeout.flag = TRUE;
+//			Door_Close_Timeout.count =0;
+			Door_flag.Delay_Open_SW_off_flag = TRUE;
+			Door_flag.Motor_to_Latch_ON_done == FALSE;
+		}
+		if (release_timeout.count>200)				//release to full door sw off time out
+		{
+			Set_Timeout_Error(CLOSE_RELEASE_TO_ERROR);
+		}
+		break;
+	case OPEN_TO_WAIT_OPEN_SW_OFF:
+		if (Door_flag.Delay_Open_SW_off_done == TRUE)
+		{
+			printf("OPEN_TO_WAIT_OPEN_SW_OFF\r\n");
+			Start_Close(50);	          		//try to turn off full open switch
+			Door_flag.Delay_Open_SW_off_done = FALSE;
+			Door_Close_Timeout.flag = TRUE;
+			Door_Close_Timeout.count =0;
+			m_doorstep = OPENSWOFF;
+		}
+		break;
+	case OPENSWOFF: 	//Check that full open switch signal is not present
+		if (Door_flag.f_open_deb_done == TRUE)    //Full open
+		{
+			printf("OPENSWOFF\r\n");
+			if (din.full_door_open==FALSE)           //full open switch is off
+			{
+				Start_Close(CLOSE_DOOR_SPEED_0);
+				m_doorstep = STARTCLOSING;
+			}
+		}
+		break;
+	case STARTCLOSING: 		//Turn on clutch/door motor in CLOSE direction
+		if (door_encode< (Full_Opened_Encode + MOVE_LENGTH_STEP1))     					//Normal speed, MOVE_LENGTH_STEP1 =200
+		{
+			printf("STARTCLOSING\r\n");
+			m_doorstep = DOORCLOSINGSPEED1;
+			Start_Close(CLOSE_DOOR_SPEED_1);
+			Position2_to_Close_timeout.flag = TRUE;
+			Position2_to_Close_timeout.count =0;
+		}
+		break;
+	case DOORCLOSINGSPEED1:		//Check encoder for door movement://After "X" value of movement, adjust door motor power/speed to next "zone" or range
+		printf("DOORCLOSINGSPEED1\r\n");
+		if (door_encode < (Full_Closed_Encode - MOVE_LENGTH_STEP2))     	//Approching close position, reduce speed MOVE_LENGTH_STEP2 =200
+		{
+			DO.Latch = TRUE;
+			m_doorstep = DOORCLOSINGSPEED2;
+			Start_Close(CLOSE_DOOR_SPEED_2);
+		}
+		break;
+	case DOORCLOSINGSPEED2:		//When reaching "XX" value of movement (near door close position), adjust door motor power/speed to "approaching door closed" range
+		printf("DOORCLOSINGSPEED2\r\n");
+		if (Door_flag.ajar_deb_done == TRUE)
+		{
+			if (HAL_GPIO_ReadPin(Door_Ajar_GPIO_Port,Door_Ajar_Pin)== GPIO_PIN_SET)
+			{
+				m_doorstep = DOORCLOSED;
+			}
+		}
+		if (Position2_to_Close_timeout.count>200)        // time out in 2 seconds
+		{
+			Set_Timeout_Error(CLOSE_DOOR_TO_ERROR);
+			m_doorstep=DOORIDLE;
+		}
+		break;
+	case DOORCLOSED:		//When door ajar signal is no longer present, turn off door motor
+		printf("DOORCLOSED\r\n");
+		Stop_Motors();
+		DO.Clutch = FALSE;
+		m_doorstep=DOORIDLE;
+		break;
+
+	case DOORBUMPSTRIPACTIVATE:
+		Stop_Motors();
+		m_doorstep = REVERSEOPEN1;
+		Door_flag.reverse_open_delay_flag = TRUE;
+		break;
+
+	case REVERSEOPEN1:
+		if (Door_flag.reverse_open_delay_done == TRUE)
+		{
+			Start_Open(open_door_speed_1);
+			m_doorstep = REVERSEOPEN2;
+			Door_flag.reverse_open_delay_done = FALSE;
+			Door_flag.reverse_open_delay_flag = TRUE;
+		}
+		break;
+	case REVERSEOPEN2:
+		if (Door_flag.reverse_open_delay_done == TRUE)
+		{
+			m_doorstep = NORMAL_OPEN;
+		}
+		break;
+	default:  // IDLE?
+		break;
+	}
+
+	if (Door_flag.reset_error_done == TRUE)
+	{
+		Reset_ERRORs();
+	}
+}

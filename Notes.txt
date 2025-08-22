@@ -1,0 +1,45 @@
+Aug 14
+1: Test the Sleep mode
+2: Learn Vechicle spy3
+
+CUR_SNS1 use BDMA and only 12bits adc.
+would be better if use ADC1 channel IN14 (PA2).
+
+Protocol of UART:
+#A;000; autocycle off
+#A;xxx; autocycle on and autocycle wait time = xxx second
+
+#B;x,y,z,v; Download request from Pi. Upload the Open door V_start_Open, V_Open, V_end_open, V_start_close, V_close, V_end_close......
+
+formate example "#B;1,0,1,100;"  means download and V_start_Open[0][1] to 100.
+formate example "#B;2,0,1,100;"  means download and V_Open[0][1] to 100.
+The second integer is the groupname number: '1':V_start_Open; '2':V_Open; '3':V_end_Open;'4':V_start_Close;  '5':V_Close;'6':V_end_close
+
+
+#b;1; Upload request from Pi. Upload the Open door V_start_Open, V_Open, V_end_open and the Close door V_start_close, V_close, V_end_close... for angle zone 1
+#b;2; Upload request from Pi.  Upload the Open door V_start_Open, V_Open, V_end_open and the Close door V_start_close, V_close, V_end_close... for angle zone 2
+formate as "#b;100,100,90,.......,100;
+
+#AT;P   Pitch Angle Test recipe upload cmd
+#AT;N   Nose Angle Test recipe upload cmd
+
+ClosePO;%d;%d;%d;%d;%d; %d;%d;%d;%d;%d; %d;%d;%d;%d;%d; %d; %d;%d;%d;%d;%d;
+
+
+Dec 03:
+How to process the ramp error.
+
+NACL-309 backlighting need corrected
+NACL-307 Door should open without ramp on stow switch
+
+
+
+Jan 23:
+1. Need to check the CAN msg, Need Parking, Locking..
+
+
+Feb 6:
+White LED for If door board sleep wakeup parking.
+
+Feb 13:
+If ajar broken, how to diagnose it? encode close to the fully close area and powerfully close door for 1 second, the ajar should on, else broken?

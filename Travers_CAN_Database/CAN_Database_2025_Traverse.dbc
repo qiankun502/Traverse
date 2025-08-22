@@ -1,0 +1,422 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Kneel_Module Door_Module CAN_Gateway Switch_Module Ramp_Module
+VAL_TABLE_ Vtsig_Buckle_Stat 1 "Driver Seat Buckled." 0 "None buckled" ;
+VAL_TABLE_ vtSig_Error_Door_Operation 4 "Door Close TimeOut" 3 "Door UnLatch TimeOut" 2 "Door Open TimeOut" 1 "Door UnRelease TimeOut" 0 "No TimeOut" ;
+VAL_TABLE_ Stay_Awake 1 "Stay Awake and Send CAN" 0 "Stop CAN and Sleep" ;
+VAL_TABLE_ Parked_data 1 "Not Parked" 0 "Parked" ;
+VAL_TABLE_ Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_TABLE_ Ramp_Kneel_Enable_Switch 2 "Ramp/Conversion Disabled" 1 "Kneel Disabled" 0 "Both Enabled" ;
+VAL_TABLE_ Door_Stat_Values 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_TABLE_ Ramp_Motor_stat 17 "Motor Leads Locked" 16 "Motor Stowing" 1 "Motor Deploying" 0 "No motor Running" ;
+VAL_TABLE_ Ramp_Switch_Status 17 "No Switches Active" 16 "Switch 2 (or 4 if Byte 1) Active" 1 "Switch 1 (or 3 if Byte 1) Active" 0 "Both Switches Active" ;
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ Fob_Nearby_Stat : 0|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Errors_Cleared : 0|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Battery_Voltage : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 0|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Power_Door_Stat : 0|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 2 STATUS_CAN_Gatway_Stat_2: 8 Vector__XXX
+
+BO_ 20 STATUS_Vehicle_Data_Time: 6 Vector__XXX
+ SG_ Vehicle_Second : 40|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Vehicle_Minute : 32|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Vehicle_Hour : 24|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Vehicle_Day : 16|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Vehicle_Month : 8|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Vehicle_Year : 0|8@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 19 STATUS_Vehicle_Sensor: 4 Vector__XXX
+ SG_ Ambient_Temperature : 16|16@1- (1,0) [0|32767] "" Vector__XXX
+ SG_ Battery_Voltage : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 512 ERROR_Kneel_SW_Error: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 517 ERROR_Kneel_Disabled: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 18 STATUS_Ramp_Cycle_Counts: 8 Vector__XXX
+ SG_ Full_Deploy_No_Kneel_Cycles : 48|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Full_Deploy_Kneel_Cycles : 32|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Full_Stow_No_Kneel_Cycles : 16|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Full_Stow_Kneel_Cycles : 0|16@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 768 ERROR_Door_SW_Error_: 6 Vector__XXX
+ SG_ Power_Door_Full_open : 48|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Power_Door_Ajar : 52|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Park_Status : 4|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Unkneel_Switch : 20|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 16|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 12|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 8|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 24|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Operate_SW_Status : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Battery_Voltage : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 1538 ERROR_Enable_Switch: 5 Vector__XXX
+ SG_ Power_Door_Full_open : 48|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Power_Door_Ajar : 52|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Ramp_Disabled : 56|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Kneel_Disabled : 60|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Park_Status : 4|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Unkneel_Switch : 20|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 16|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 12|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 8|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 24|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Operate_SW_Status : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Battery_Voltage : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 80 STATUS_Diagnostics_Module_Status: 8 Vector__XXX
+ SG_ Maintance_Required : 8|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Errors_Cleared : 0|8@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 774 ERROR_Door_Cinch_Timeout: 8 Vector__XXX
+
+BO_ 773 ERROR_Cinch_Overcurrent: 8 Vector__XXX
+
+BO_ 772 ERROR_Door_Enable: 8 Vector__XXX
+
+BO_ 770 ERROR_Reverse_Closing: 8 Vector__XXX
+
+BO_ 769 ERROR_Reverse_Opening: 8 Vector__XXX
+
+BO_ 771 ERROR_Door_Timeout: 1 Vector__XXX
+ SG_ Error_Door_Operation : 0|8@1- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 1281 ERROR_Low_Voltage: 2 Vector__XXX
+ SG_ Battery_Voltage : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 1537 ERROR_Switch_Stuck: 5 Vector__XXX
+ SG_ Power_Door_Full_open : 48|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Power_Door_Ajar : 52|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Ramp_Disabled : 56|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Kneel_Disabled : 60|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Park_Status : 4|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Unkneel_Switch : 20|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 16|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 12|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 8|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 24|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Operate_SW_Status : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Battery_Voltage : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 1027 ERROR_CAN_Short_to_GND: 8 Vector__XXX
+
+BO_ 1026 ERROR_CAN_Short_to_Power: 8 Vector__XXX
+
+BO_ 1025 ERROR_No_CAN_Communication: 8 Vector__XXX
+
+BO_ 260 ERROR_Ramp_TO_Stow: 8 Vector__XXX
+ SG_ Error_Extra_SW : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Almost_deploy : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Stow_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Stow_Motor : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Deploy_Motor : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 259 ERROR_Ramp_TO_Deploy: 8 Vector__XXX
+ SG_ Error_Extra_SW : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Almost_deploy : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Stow_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Stow_Motor : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Deploy_Motor : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 258 ERROR_Ramp_OC_Stow: 8 Vector__XXX
+ SG_ Error_Extra_SW : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Almost_deploy : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Stow_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Stow_Motor : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Deploy_Motor : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 257 ERROR_Ramp_OC_Deploy: 8 Vector__XXX
+ SG_ Error_Extra_SW : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Almost_deploy : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Stow_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Stow_Motor : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Deploy_Motor : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 516 ERROR_Kneel_TO_Raising: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 515 ERROR_Kneel_TO_Lowering: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 514 ERROR_Kneel_OC_Raising: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 513 ERROR_Kneel_OC_Lowering: 8 Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Kneel_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Unkneel_M : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_M : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 1024 ERROR_CAN_HW_Error: 4 Door_Module
+ SG_ Error_Door_Stat : 32|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Kneel_Conv_EN : 28|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Park_Status : 20|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Op_Status : 16|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Door_EN : 24|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Unkneel_SW : 8|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Kneel_SW : 12|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Stow : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 4|4@1- (1,0) [0|1] "" Vector__XXX
+
+BO_ 49 STATUS_Power_Door_Currents: 8 Door_Module
+ SG_ Uncinch_Door_Curr : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ CInch_Door_Curr : 48|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Power_Door_Open_Curr : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Power_Door_Close_Curr : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 32 STATUS_Kneel_Module: 7 Kneel_Module
+ SG_ REV_Level_2 : 8|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_1 : 4|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_0 : 0|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Kneel_Motor_Status : 16|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Unkneel_Switch : 60|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Kneel_Switch : 56|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Unkneel_Current : 24|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Kneel_Down_Current : 40|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 48 STATUS_Power_Door_Stat: 8 CAN_Gateway
+ SG_ Version_Number : 48|16@1- (1,0) [0|65536] "" Vector__XXX
+ SG_ Power_Door_Full_open : 0|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Power_Door_Ajar : 4|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Door_Position : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Cinch_Position : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Power_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+
+BO_ 1 STATUS_CAN_Gateway_Stat: 8 CAN_Gateway
+ SG_ Fob_Button_Stat : 40|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Version_Number : 48|16@1- (1,0) [0|65536] "" Vector__XXX
+ SG_ Buckle_Status : 24|8@1- (1,0) [0|5] "" Vector__XXX
+ SG_ Lock_Stat : 32|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Operate_SW_Status : 16|8@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Park_Stat : 8|8@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Awake_Signal : 0|8@1- (1,0) [0|1] "" Vector__XXX
+
+BO_ 96 STATUS_Switch_Module_Status: 8 Switch_Module
+ SG_ REV_Level_2 : 40|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_1 : 36|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_0 : 32|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Operate_From_Switch : 24|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Power_Door_Stat : 16|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Power_Door_Full_open : 8|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Power_Door_Ajar : 12|4@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Ramp_Kneel_Disable : 0|4@1- (1,0) [0|2] "" Vector__XXX
+ SG_ Operate_SW_Status : 4|4@1- (1,0) [0|1] "" Vector__XXX
+
+BO_ 256 ERROR_Ramp_SW_Error: 8 Ramp_Module
+ SG_ Error_Stow : 0|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Deploy : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Extra_SW : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Almost_deploy : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Stow_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Error_Stow_Motor : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Error_Door_Stat : 8|8@1- (1,0) [0|255] "" Vector__XXX
+ SG_ Error_Deploy_Motor : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 48|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 17 STATUS_Ramp_Motor_Currents: 6 Ramp_Module
+ SG_ Stow_Motor_Current : 0|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Deploy_Motor_Current : 16|16@1- (1,0) [0|1023] "" Vector__XXX
+ SG_ Battery_Voltage : 32|16@1- (1,0) [0|1023] "" Vector__XXX
+
+BO_ 16 STATUS_Ramp_SW_Status: 3 Ramp_Module
+ SG_ REV_Level_2 : 40|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_1 : 36|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REV_Level_0 : 32|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TO_Operate_Cancel : 24|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ramp_Motor_Status : 16|8@1- (1,0) [0|11] "" Vector__XXX
+ SG_ Ramp_Switch_Data2 : 8|8@1- (1,0) [0|11] "" Vector__XXX
+ SG_ Ramp_Sw_Data1 : 0|8@1- (1,0) [0|11] "" Vector__XXX
+
+BO_TX_BU_ 48 : Door_Module,CAN_Gateway;
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+BA_DEF_ BO_  "Report_Time" INT 100 200;
+BA_DEF_ SG_  "Ramp_Switch_Data" INT 0 17;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "Report_Time" 100;
+BA_DEF_DEF_  "Ramp_Switch_Data" 0;
+BA_DEF_DEF_  "BusType" "CAN";
+VAL_ 3221225472 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 3221225472 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 3221225472 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 3221225472 Power_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 512 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 512 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 512 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 517 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 517 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 517 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 768 Error_Park_Status 1 "Not Parked" 0 "Parked" ;
+VAL_ 768 Unkneel_Switch 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 768 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 768 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 768 Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1538 Error_Park_Status 1 "Not Parked" 0 "Parked" ;
+VAL_ 1538 Unkneel_Switch 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1538 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1538 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 1538 Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 771 Error_Door_Operation 4 "Door Close TimeOut" 3 "Door UnLatch TimeOut" 2 "Door Open TimeOut" 1 "Door UnRelease TimeOut" 0 "No TimeOut" ;
+VAL_ 1537 Error_Park_Status 1 "Not Parked" 0 "Parked" ;
+VAL_ 1537 Unkneel_Switch 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1537 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1537 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 1537 Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 260 Error_Extra_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 260 Error_Almost_deploy 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 260 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 259 Error_Extra_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 259 Error_Almost_deploy 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 259 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 258 Error_Extra_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 258 Error_Almost_deploy 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 258 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 257 Error_Extra_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 257 Error_Almost_deploy 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 257 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 516 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 516 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 516 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 515 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 515 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 515 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 514 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 514 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 514 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 513 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 513 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 513 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 1024 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 1024 Error_Kneel_Conv_EN 2 "Conversion_Disabled" 1 "Kneel Disabled" 0 "Both Enabled" ;
+VAL_ 1024 Error_Park_Status 1 "Not Parked" 0 "Parked" ;
+VAL_ 1024 Error_Op_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1024 Error_Door_EN 1 "Door Disabled" 0 "Door Enabled" ;
+VAL_ 1024 Error_Unkneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1024 Error_Kneel_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 32 Kneel_Motor_Status 17 "Motor Leads Locked" 16 "Unkneeling" 1 "Kneeling" 0 "No motor Running" ;
+VAL_ 32 Unkneel_Switch 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 32 Kneel_Switch 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 48 Power_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 1 Fob_Button_Stat 1 "Fob Open Door Key is Pressed" 0 "Fob Open Door Key is unpressed" ;
+VAL_ 1 Buckle_Status 1 "Driver Seat Buckled." 0 "None buckled" ;
+VAL_ 1 Lock_Stat 1 "Door is locked." 0 "Not locked" ;
+VAL_ 1 Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 1 Park_Stat 1 "Not Parked" 0 "Parked" ;
+VAL_ 1 Awake_Signal 1 "Stay Awake and Send CAN" 0 "Stop CAN and Sleep" ;
+VAL_ 96 Power_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 96 Ramp_Kneel_Disable 2 "Ramp/Conversion Disabled" 1 "Kneel Disabled" 0 "Both Enabled" ;
+VAL_ 96 Operate_SW_Status 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 256 Error_Extra_SW 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 256 Error_Almost_deploy 1 "Switch Active" 0 "Switch Not Active" ;
+VAL_ 256 Error_Door_Stat 15 "Signal N/A" 11 "Door Failure" 8 "Reversal Closing" 7 "Reversal Opening" 6 "Door Full Closed" 5 "Door Full Open" 4 "Manual Closing" 3 "Manual Opening" 2 "Power Closing" 1 "Power Opening" 0 "Manual" ;
+VAL_ 16 Ramp_Motor_Status 17 "Motor Leads Locked" 16 "Motor Stowing" 1 "Motor Deploying" 0 "No motor Running" ;
+VAL_ 16 Ramp_Switch_Data2 17 "No Switches Active" 16 "Switch 2 (or 4 if Byte 1) Active" 1 "Switch 1 (or 3 if Byte 1) Active" 0 "Both Switches Active" ;
+VAL_ 16 Ramp_Sw_Data1 17 "No Switches Active" 16 "Switch 2 (or 4 if Byte 1) Active" 1 "Switch 1 (or 3 if Byte 1) Active" 0 "Both Switches Active" ;
+
