@@ -498,8 +498,6 @@ void Braun_Op_Pressed()
 	if (initialDone == FALSE)
 		return;
 
-//	if (error == 0)
-//	{
 		if (DI.Door_ajar == TRUE)                    															//If Door is fully closed
 		{
 			m_doorstep = PREOPEN;
@@ -532,8 +530,6 @@ void Braun_Op_Pressed()
 			Door_flag.reset_error_flag = FALSE;
 		}
 		ResetFlagsInIDLE();
-//	}
-//	return;
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -550,17 +546,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	/****************************
 //	 * Full Latched Switch INT
 //	 ***************************/
-//	if (GPIO_Pin == Door_Latched_Pin) {
-//		DIchanged=TRUE;
-//		if (error == 0) {
-//			if (HAL_GPIO_ReadPin(Door_Latched_GPIO_Port,Door_Latched_Pin)== GPIO_PIN_SET)
-//			{
-//				DI.Door_Latched_Switch = TRUE;
-//				Door_flag.latch_deb_flag = 1;
-//				Door_Count.latch_deb_count = 0;
-//			}
-//		}
-//	}
 
 	/****************************
 	 * Braun Operate Switch INT
