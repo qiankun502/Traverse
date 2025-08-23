@@ -303,11 +303,6 @@ void UpdateAlloutputs(void)
 	else
 		HAL_GPIO_WritePin(LATCH_VSO_GPIO_Port, LATCH_VSO_Pin, GPIO_PIN_RESET);
 
-//	if   (DO.Latch_DIR==)
-//	{
-//		HAL_GPIO_WritePin(Latch_GPIO_Port, Latch_Pin, GPIO_PIN_SET);
-//		HAL_GPIO_WritePin(Magna_Power_Release_GPIO_Port, Magna_Power_Release_Pin, GPIO_PIN_SET);
-//	}
 	//printf("test IO:Output =%d;%d;%d;\r\n",DO.Clutch, DO.Latch, DO.Release);//,DI.Door_Latched_Switch,DI.Kneel_disabled,DI.Lock_status_switch,DI.Out_side_handle,DI.full_door_open);
 }
 
