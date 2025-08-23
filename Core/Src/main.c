@@ -555,23 +555,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	}
 
 	/****************************
-	 *
-	 * Full Open Switch INT
-	 *
-	 ***************************/
-	if (GPIO_Pin == Door_Open_Pin)
-	{
-		DIchanged=TRUE;
-		//sprintf(buffer,"full open\r\n");
-		// drew_print(buffer);
-		if (error == 0)
-		{
-//				Door_flag.f_open_deb_flag = TRUE;
-//				Door_Count.f_open_count = 0;
-		}
-	}
-
-	/****************************
 	 * Outside Handle Switch INT
 	 *handle_sw_pressed
 	 ***************************/
