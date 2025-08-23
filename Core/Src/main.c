@@ -224,10 +224,6 @@ void UpdateAllInputs(void)
  */
 void UpdateAlloutputs(void)
 {
-//	DO.Wakeup = FALSE;
-//	DO.Clutch
-
-	//DO.Clutch = FALSE;
 	if (DO.Clutch == TRUE)
 		HAL_GPIO_WritePin(CLUTCH_GPIO_Port, CLUTCH_Pin, GPIO_PIN_SET);
 	else
