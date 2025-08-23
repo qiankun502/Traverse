@@ -1,0 +1,92 @@
+name: Traverse Door Direct Debug
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+  
+jobs:
+  build:
+
+    runs-on: windows-2025
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Cache ARM GCC Toolchain
+      id: cache-arm-gcc
+      uses: actions/cache@v4
+      with:
+        path: C:\arm-gcc\
+        key: arm-gcc-14.2-rel1 # If updating to new version, update this key to pull in new version
+        
+    - name: Download ARM GCC Toolchain (14.2.Rel1) # If update to new version, update cache key
+      if: steps.cache-arm-gcc.outputs.cache-hit != 'true'
+      run: |
+        curl -LO https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-mingw-w64-x86_64-arm-none-eabi.zip
+        7z x arm-gnu-toolchain-14.2.rel1-mingw-w64-x86_64-arm-none-eabi.zip -oC:\arm-gcc
+    - name: Add GCC to PATH
+      run: echo "C:\arm-gcc\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+
+    - name: Cache GoogleTest
+      id: cache-gtest
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests\googletest-src
+        key: gtest-cache-1.14.0
+
+    - name: Download GTest (1.14.0) # If update to new version, update cache key
+      if: steps.cache-gtest.outputs.cache-hit != 'true'
+      run: |
+        curl -LO https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+        7z x v1.14.0.zip -o${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests\
+        Rename-Item -Path "${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests\googletest-1.14.0" -NewName "googletest-src"
+    - name: Configure CMake for Unit Tests
+      run: >
+        cmake -G "MinGW Makefiles"
+        -DBUILD_FIRMWARE=OFF
+        -DBUILD_TESTS=ON
+        -S "${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests"
+        -B "${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests\build-tests"
+        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+    - name: Build Unit Tests
+      run: >
+        cmake --build "${{ github.workspace }}\Traverse_CAN_Gateway_Direct_Proj\Tests\build-tests" 
+        --config ${{ env.BUILD_TYPE }}
+        --target runTests
+    - name: Run Unit Tests
+      run: "${{ github.workspace }}/Traverse_CAN_Gateway_Direct_Proj/Tests/build-tests/runTests.exe"
+
+    - name: Configure CMake for Firmware
+      run: >
+        cmake -G "MinGW Makefiles"
+        -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\cmake\arm-none-eabi-gcc.cmake
+        -DBUILD_FIRMWARE=ON
+        -DBUILD_TESTS=OFF
+        -DCMAKE_C_COMPILER="arm-none-eabi-gcc" 
+        -DCMAKE_CXX_COMPILER="arm-none-eabi-g++" 
+        -S ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware
+        -B ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware\cmake-debug 
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    - name: Build Firmware
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware\cmake-debug --config ${{env.BUILD_TYPE}}
+      
+    - name: Put current date into a variable
+      run: |
+        $NOW=& Get-Date -format "yyyyMMdd_HHmmss"
+        echo "NOW=$NOW" >> $env:GITHUB_ENV
+      
+    - name: Upload Debug Binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: DEBUG_Direct_${{env.NOW}}
+        path: |
+          ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware\cmake-debug\Traverse_CAN_Gateway_Direct_Proj.elf
+          ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware\cmake-debug\Traverse_CAN_Gateway_Direct_Proj.hex
+          ${{github.workspace}}\Traverse_CAN_Gateway_Direct_Proj\Firmware\cmake-debug\Traverse_CAN_Gateway_Direct_Proj.bin
