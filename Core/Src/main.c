@@ -312,7 +312,6 @@ char tim6_flag;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	motoroutput++;
 
-//	DO.Wakeup = TRUE;
 	//motoroutput =(motoroutput>5000)? 1000:motoroutput;
 	if (htim->Instance == TIM6) {       						//TIM6, period around 32ms
 		  //Ken Test
