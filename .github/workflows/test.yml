@@ -36,17 +36,17 @@ jobs:
     - name: Configure CMake for Firmware
       run: >
         cmake -G "MinGW Makefiles"
-        -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}\Traverse\cmake\arm-none-eabi-gcc.cmake
+        -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}\cmake\arm-none-eabi-gcc.cmake
         -DBUILD_FIRMWARE=ON
         -DBUILD_TESTS=OFF
         -DCMAKE_C_COMPILER="arm-none-eabi-gcc" 
         -DCMAKE_CXX_COMPILER="arm-none-eabi-g++" 
-        -S ${{github.workspace}}\Traverse
-        -B ${{github.workspace}}\Traverse\cmake-debug 
+        -S ${{github.workspace}}
+        -B ${{github.workspace}}\cmake-debug 
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build Firmware
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}\Traverse\cmake-debug --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}\cmake-debug --config ${{env.BUILD_TYPE}}
       
     - name: Put current date into a variable
       run: |
