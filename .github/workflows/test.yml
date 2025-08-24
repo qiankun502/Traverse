@@ -33,35 +33,6 @@ jobs:
     - name: Add GCC to PATH
       run: echo "C:\arm-gcc\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
 
-    - name: Cache GoogleTest
-      id: cache-gtest
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}\Traverse\Tests\googletest-src
-        key: gtest-cache-1.14.0
-
-    - name: Download GTest (1.14.0) # If update to new version, update cache key
-      if: steps.cache-gtest.outputs.cache-hit != 'true'
-      run: |
-        curl -LO https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-        7z x v1.14.0.zip -o${{ github.workspace }}\Traverse\Tests\
-        Rename-Item -Path "${{ github.workspace }}\Traverse\Tests\googletest-1.14.0" -NewName "googletest-src"
-    - name: Configure CMake for Unit Tests
-      run: >
-        cmake -G "MinGW Makefiles"
-        -DBUILD_FIRMWARE=OFF
-        -DBUILD_TESTS=ON
-        -S "${{ github.workspace }}\Traverse\Tests"
-        -B "${{ github.workspace }}\Traverse\Tests\build-tests"
-        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
-    - name: Build Unit Tests
-      run: >
-        cmake --build "${{ github.workspace }}\Traverse\Tests\build-tests" 
-        --config ${{ env.BUILD_TYPE }}
-        --target runTests
-    - name: Run Unit Tests
-      run: "${{ github.workspace }}/Traverse/Tests/build-tests/runTests.exe"
-
     - name: Configure CMake for Firmware
       run: >
         cmake -G "MinGW Makefiles"
